@@ -5505,6 +5505,7 @@ File /r "..\patches\*"
 !insertmacro Patch "${URTInstallPath}\ngen.exe" "ngen.exe.bdf"
 !insertmacro Patch "$SYSDIR\mscoree.dll" "mscoree.dll.bdf"
 !insertmacro Patch "$SYSDIR\msvcr80.dll" "msvcr80.dll.bdf"
+!insertmacro Patch "$SYSDIR\ndphlpr.vxd" "ndphlpr.vxd.bdf"
 
 Skip95Patches:
 
