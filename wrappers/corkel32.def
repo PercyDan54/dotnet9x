@@ -6,11 +6,11 @@ EXPORTS
   WideCharToMultiByte=CORKEL32_WideCharToMultiByte
   LoadLibraryExA=CORKEL32_LoadLibraryExA
   LoadLibraryExW=CORKEL32_LoadLibraryExW
-  CreateFileA=CORKEL32_CreateFileA
+  CreateFileA=KERNEL32.CreateFileA
   GetEnvironmentVariableA=CORKEL32_GetEnvironmentVariableA
   LoadLibraryA=CORKEL32_LoadLibraryA
   LoadLibraryW=CORKEL32_LoadLibraryW
-  DeviceIoControl=CORKEL32_DeviceIoControl
+  DeviceIoControl=KERNEL32.DeviceIoControl
   InterlockedCompareExchange=CORKEL32_InterlockedCompareExchange
   CreateToolhelp32Snapshot=CORKEL32_CreateToolhelp32Snapshot
   IsDebuggerPresent=CORKEL32_IsDebuggerPresent

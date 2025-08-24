@@ -65,38 +65,6 @@ HMODULE WINAPI CORKEL32_LoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWOR
   return h;
 }
 
-HANDLE WINAPI CORKEL32_CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
-{
-  /*LONG fnLen;
-  char temp2[512];
-  HANDLE h;
-  DWORD le;*/
-
-  Trace(TRACE_PASSTHROUGH, "CreateFileA");
-
-  if (!strcmp(lpFileName, "\\\\.\\NDPHLPR.VXD")) {
-    return (HANDLE) 0xCAFEBABE;
-  }
-
-  /*if (dwFlagsAndAttributes & FILE_FLAG_DELETE_ON_CLOSE) {
-    sprintf(temp2, "lpFileName: %s, dwDesiredAccess: %x, dwShareMode: %x, lpSecurityAttributes: %p, dwCreationDisposition: %x, dwFlagsAndAttributes: %x, hTemplateFile: %x", lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-    MessageBoxA(NULL, temp2, NULL, 0);
-  }
-
-  h = CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-
-  if (dwFlagsAndAttributes & FILE_FLAG_DELETE_ON_CLOSE) {
-    le = GetLastError();
-    if (le) {
-      sprintf(temp2, "CreateFileA Failed: 0x%X", le);
-      MessageBoxA(0, temp2, 0, 0);
-      SetLastError(le);
-    }
-  }*/
-
-  return CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
-}
-
 DWORD WINAPI CORKEL32_GetEnvironmentVariableA(LPCSTR lpName, LPSTR lpBuffer, DWORD nSize)
 {
   DWORD r = GetEnvironmentVariableA(lpName, lpBuffer, nSize);
@@ -116,41 +84,6 @@ HMODULE WINAPI CORKEL32_LoadLibraryW(LPCWSTR lpLibFileName)
   HMODULE h = LoadLibraryW(lpLibFileName);
   Trace((h != NULL) ? TRACE_PASSTHROUGH : TRACE_POTENTIAL_ERROR, "LoadLibraryW: %ls - result: %p", lpLibFileName, h);
   return h;
-}
-
-BOOL WINAPI CORKEL32_DeviceIoControl(HANDLE hDevice, DWORD dwIoControlCode, LPVOID lpInBuffer, DWORD nInBufferSize, LPVOID lpOutBuffer, DWORD nOutBufferSize, LPDWORD lpBytesReturned, LPOVERLAPPED lpOverlapped)
-{
-  BOOL e;
-
-  /*char buf[512];
-  sprintf(buf, "hDevice: 0x%p, dwIoControlCode: 0x%X, lpInBuffer: %p, nInBufferSize: 0x%X, lpOutBuffer: %p, nOutBufferSize: 0x%X, lpBytesReturned: %p, lpOverlapped: %p", hDevice, dwIoControlCode, lpInBuffer, nInBufferSize, lpOutBuffer, nOutBufferSize, lpBytesReturned, lpOverlapped);
-  MessageBoxA(0, buf, 0, 0);*/
-
-  if (hDevice == (HANDLE) 0xCAFEBABE) {
-    if (dwIoControlCode == 0x86427531) {
-      *(DWORD*)lpOutBuffer = 0x40;
-    } else {
-      char buf[100];
-      sprintf(buf, "Hijack 2: 0x%X", dwIoControlCode);
-      MessageBoxA(0,buf,0,0);
-    }
-
-    return TRUE;
-  }
-
-  e = DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferSize, lpOutBuffer, nOutBufferSize, lpBytesReturned, lpOverlapped);
-  Trace(TRACE_PASSTHROUGH, "DeviceIoControl");
-
-  /*if (!e) {
-    DWORD le = GetLastError();
-
-    sprintf(buf, "DeviceIoControl Failed: 0x%X", le);
-    MessageBoxA(0, buf, 0, 0);
-
-    SetLastError(le);
-  }*/
-
-  return e;
 }
 
 // Reimplemented
